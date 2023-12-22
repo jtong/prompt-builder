@@ -1,0 +1,9 @@
+desc: "Test class name in wildcard import"
+given:
+  arg:
+    className: "WildcardClass"
+    imports: ["some.package.*"]
+    currentPackage: "some.package.current"
+    basePackage: "some.package"
+then:
+  expectedResult: "some.package.WildcardClass"

@@ -1,0 +1,8 @@
+desc: "测试声明变量"
+given:
+  targetFile: "2.md"
+then:
+  expectedResult:
+      classes:
+      - name: "User"
+

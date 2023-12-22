@@ -1,0 +1,9 @@
+desc: "Test non-existent class name"
+given:
+  arg:
+    className: "NonExistentClass"
+    imports: ["some.package.SomeClass"]
+    currentPackage: "some.package.current"
+    basePackage: "some.package"
+then:
+  expectedResult: null

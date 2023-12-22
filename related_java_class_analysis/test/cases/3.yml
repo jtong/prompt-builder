@@ -1,0 +1,11 @@
+desc: "返回值表达式为static call"
+given:
+  targetFile: "3.md"
+then:
+  expectedResult:
+    classes:
+      - name: "User"
+      - name: "OtherClass"
+        methods:
+          - methodCall
+

@@ -1,0 +1,10 @@
+desc: "测试简单的无参方法和静态方法"
+given:
+  targetFile: "1.md"
+then:
+  expectedResult:
+      classes:
+      - name: "OtherClass"
+        methods:
+          - methodCall
+

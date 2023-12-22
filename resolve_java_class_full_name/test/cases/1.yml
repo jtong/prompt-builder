@@ -1,0 +1,9 @@
+desc: "Test direct import of a class not in base package"
+given:
+  arg:
+    className: "SomeClass"
+    imports: ["some.package.SomeClass"]
+    currentPackage: "some.package.current"
+    basePackage: "some.package"
+then:
+  expectedResult: "some.package.SomeClass"

@@ -1,0 +1,9 @@
+desc: "Test class in the same package without explicit import"
+given:
+  arg:
+    className: "PackageClass"
+    imports: []
+    currentPackage: "some.package.current"
+    basePackage: "some.package"
+then:
+  expectedResult: "some.package.current.PackageClass"

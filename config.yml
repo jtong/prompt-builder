@@ -1,0 +1,12 @@
+project:
+  base_path: ../
+  ignore:
+    path:
+      - target
+      - .idea
+      - .mvn
+      - prompt
+      - prompt-builder
+      - .git
+    file:
+      - .DS_Store
