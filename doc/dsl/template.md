@@ -10,7 +10,7 @@
 
 ### 技术框架
 
-我们使用的技术为：SpringBoot、Mybatis、Apache Shiro。
+我们使用的技术为：SpringBoot、Mybatis、Sprint Security。
 
 
 {related_code}
