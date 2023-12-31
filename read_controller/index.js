@@ -1,9 +1,10 @@
 const fs = require('fs');
 const javaParser = require("java-parser");
 const import_read = require("../import_read");
+const path = require('path');
 
 function read_controller(project_base, config) {
-    const javaContent = fs.readFileSync(project_base + config.path, 'utf8');
+    const javaContent = fs.readFileSync(path.join(project_base, config.path), 'utf8');
 
 // 解析Java文件
     const javaAST = javaParser.parse(javaContent);

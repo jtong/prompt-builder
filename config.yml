@@ -1,5 +1,5 @@
 project:
-  base_path: ../
+  base_path: ../demo
   ignore:
     path:
       - target

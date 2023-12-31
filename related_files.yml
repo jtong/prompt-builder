@@ -1,0 +1,6 @@
+- path: src/main/java/dev/jtong/training/demo/smart/domain/controllers/UsersController.java
+  reader: controller
+  methods:
+    - changePassword
+- path: src/main/java/dev/jtong/training/demo/smart/domain/controllers/representation/UserVO.java
+  reader: model

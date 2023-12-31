@@ -43,5 +43,7 @@
 
 - 读取field
 - 删掉setter、getter，用注释替代
+  - [x] 删掉setter、getter，
 - 其他方法保留
+- 读取constructor
 

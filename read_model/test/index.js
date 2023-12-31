@@ -2,7 +2,7 @@ const {expect} = require('chai');
 const fs = require('fs');
 const path = require('path');
 const yaml = require('js-yaml');
-const read_import = require('../index');
+const read_model = require('../index');
 const {parse} = require('java-parser');
 const javaParser = require("java-parser");
 
@@ -15,7 +15,7 @@ describe('build imports', function () {
 
         // 解析Java文件
         const javaAST = javaParser.parse(javaContent);
-        let result = read_import(javaAST);
+        let result = read_model(javaAST);
         console.log(result);
         expect(result).to.deep.equal([
             'dev.jtong.training.demo.smart.domain.persistent.model.user.mybatis.*',

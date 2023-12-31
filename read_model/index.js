@@ -1,9 +1,10 @@
 const fs = require('fs');
 const javaParser = require("java-parser");
 const import_read = require("../import_read");
+const path = require('path');
 
 function read_model(project_base, config) {
-    const javaContent = fs.readFileSync(project_base + config.path, 'utf8');
+    const javaContent = fs.readFileSync(path.join(project_base, config.path), 'utf8');
 
 // 解析Java文件
     const javaAST = javaParser.parse(javaContent);
@@ -18,10 +19,10 @@ function read_model(project_base, config) {
 // 提取所有字段和方法
     const classBodyDeclarations = javaAST.children.ordinaryCompilationUnit[0].children.typeDeclaration[0].children.classDeclaration[0].children.normalClassDeclaration[0].children.classBody[0].children.classBodyDeclaration;
 
-    const fields = classBodyDeclarations.filter(declaration => declaration.children.classMemberDeclaration[0].children.fieldDeclaration);
+    const fields = classBodyDeclarations.filter(declaration => declaration.children.classMemberDeclaration && declaration.children.classMemberDeclaration[0].children.fieldDeclaration);
     const methodsToKeep = new Set(config.methods);
     const filteredMethods = classBodyDeclarations.filter(declaration => {
-        if (declaration.children.classMemberDeclaration[0].children.methodDeclaration) {
+        if (declaration.children.classMemberDeclaration && declaration.children.classMemberDeclaration[0].children.methodDeclaration) {
             const methodName = declaration.children.classMemberDeclaration[0].children.methodDeclaration[0].children.methodHeader[0].children.methodDeclarator[0].children.Identifier[0].image;
             return methodsToKeep.has(methodName);
             // return methodsToKeep(declaration.children.classMemberDeclaration[0].children.methodDeclaration[0]);
