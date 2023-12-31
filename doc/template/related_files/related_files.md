@@ -8,11 +8,13 @@
 
 ## 相关文件
 
-``yaml
+```yaml
 manual_related_files:
-- **/controller/UserController
-- **/controller/presentation/*
-  ``
+  - >
+    **/controller/UserController
+  - >
+    **/controller/presentation/*
+```
 
 ## 输出格式
 
