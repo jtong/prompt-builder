@@ -23,7 +23,7 @@ function renderTemplate(templateText, configPath, contextPath, baseDir) {
 
     project.base_path = path.resolve(baseDir, project.base_path);
 
-    console.log(project.base_path)
+    // console.log(project.base_path)
 
     // 定义内部上下文
     const internalContext = {

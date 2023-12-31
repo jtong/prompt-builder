@@ -8,6 +8,7 @@ const excludedFolders = ['node_modules',
     'ai_helper',
     'test', // 因为当前文件夹也会执行，所以test自然会被执行，所以不需要再遍历test
     '.git',
+    'related_files_finder',
     'build'
 ];
 const testFiles = [];
