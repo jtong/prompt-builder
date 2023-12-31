@@ -1,14 +1,19 @@
-## 使用方式
 
-### 安装
+# 使用方式 (Usage Instructions)
+
+## 安装 (Installation)
+
+首先安装 `prompt-context-builder` 工具：
 
 ```shell
 npm install -g prompt-context-builder
 ```
 
-### 使用
+## 使用 (Usage)
 
-在项目根目录建立一个文件夹，比如prompt_builder，比如：
+### 项目结构设置 (Setting up the Project Structure)
+
+在您的项目根目录中创建一个名为 `prompt_builder` 的文件夹。例如，您的项目结构应如下所示：
 
 ```
 .
@@ -25,17 +30,20 @@ npm install -g prompt-context-builder
     └── test
 ```
 
-在prompt_builder下准备配置文件比如config.yml、related_files.yml和模版文件，比如1.md。
+在 `prompt_builder` 文件夹下，您需要准备配置文件（如 `config.yml` 和 `related_files.yml`）以及模板文件（如 `1.md`）。
 
-执行prompt_builder得到编译后的文本，通过`>`输出到指定文件：
+### 生成文本 (Generating Text)
+
+执行以下命令以使用 `prompt_builder` 生成编译后的文本，并将输出重定向到指定文件：
 
 ```shell
 prompt_builder -t prompt/1.md -c prompt/config.yml -x prompt/related_files.yml > output/1.md
 ```
 
-### prompt_builder 命令说明
+## prompt_builder 命令说明 (Command Description)
 
-其中 -x 为可选参数。相关参数含义可以直接执行 prompt_builder 获得：
+- `-x`: 此参数为可选项。
+- 若要了解更多参数含义，可直接执行 `prompt_builder` 命令。
 
 ```shell
 Options:
@@ -46,9 +54,9 @@ Options:
   -x, --context   Path to the YAML context file                         [string]
 ```
 
-### config 配置文件说明
+## config 配置文件说明 (Config File Description)
 
-config.yaml的示例如下：
+`config.yaml` 文件的示例如下：
 
 ```yaml
 project:
@@ -60,22 +68,18 @@ project:
     file:
       - .DS_Store
 ```
-其中：
-1. `project`: 这是最顶层的键，表示以下配置都是关于项目文件夹的。
 
-2. `base_path`: 这里指定了项目文件夹的根路径。`../` 表示项目根目录是相对于当前文件夹的上级目录。当前文件夹为执行 `prompt_builder` 的路径
+解释：
+1. `project`: 项目的顶层配置键。
+2. `base_path`: 指定项目文件夹的根路径。`../` 表示当前文件夹的上级目录。
+3. `ignore`: 定义生成文件树时忽略的路径和文件。
 
-3. `ignore`: 这个键下定义了生成文件树时需要忽略的路径和文件。
+   - `path`: 忽略的文件夹列表。基于 `base_path` 的相对路径。
+   - `file`: 忽略的文件列表。适用于所有子文件夹。
 
-    - `path`: 这个列表包含了不需要分析的文件夹。这些路径是基于 `base_path` 的相对路径。只有当路径完全匹配时，相应的文件夹才会被忽略。例如，`prompt-builder`、`.git` 等目录在生成文件树时会被忽略。
+## context 配置文件说明 (Context Config File Description)
 
-    - `file`: 这个列表包含了需要在所有子文件夹中忽略的同名文件。例如，`.DS_Store` 文件在任何子文件夹中都会被忽略。
-
-这个配置文件的作用是帮助定义项目信息，并规定哪些文件和目录应该被排除在项目的分析或处理之外，比如在构建文件树时。这样可以避免不必要的文件和目录增加上下文的token数。
-
-### context 的配置文件说明
-
-context 的配置文件 related_files.yml 的示例如下：
+`related_files.yml` 文件的示例如下：
 
 ```yaml
 - path: src/main/java/dev/jtong/training/demo/smart/domain/controllers/UsersController.java
@@ -86,56 +90,24 @@ context 的配置文件 related_files.yml 的示例如下：
   reader: model
 ```
 
-### 模版文件说明
+## 模版文件说明 (Template File Description)
 
-模版使用的是ejs模版，在文本中支持相关的函数，在对应的位置打印出相关的上下文。
+模版文件使用 `ejs` 模版语法，允许在文本中插入相关函数。
 
-#### folder_tree 函数
+### folder_tree 函数 (folder_tree Function)
 
 ```ejs
 <%-folder_tree()%>
 ```
 
-使用folder_tree函数可以打印出config下base_path指定路径下的文件树，以文本形式打印出来。类似：
+使用 `folder_tree` 函数可以显示 `config` 下 `base_path` 指定路径的文件树。
 
-```
-.
-├── pom.xml
-└── src
-    ├── main
-    │   └── java
-    └── test
-```
-
-
-#### related_files 函数
+### related_files 函数 (related_files Function)
 
 ```ejs
 <%-related_files()%>
 ```
 
-使用 related_files 函数时必须提供 context 的配置文件，该函数会采用特定的reader读取相关文件生成相关文件的内容。类似：
+使用 `related_files` 函数时，需要提供 `context` 配置文件。此函数会读取相关文件并生成内容。
 
-```markdown
-
-### src/main/java/dev/jtong/training/demo/smart/domain/controllers/representation/UserVO.java
-
-\```
-package dev.jtong.training.demo.smart.domain.controllers.representation;
-
-import dev.jtong.training.demo.smart.domain.persistent.model.user.mybatis.User;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-
-public class UserVO {
-    private String id;
-    private String name;
-    private int age;
-    private String password;
-}
-\```
-
-```
 
