@@ -20,9 +20,12 @@ describe('EJS模板渲染测试', function() {
         it(testCase.desc, function() {
             // 从given中获取输入参数
             const inputTemplateText = fs.readFileSync(path.join(casesDir, testCase.given.targetFile), 'utf8');
+            let config_file = 'config.yml';
+            let context_file = 'related_files.yml';
 
+            const baseDir = path.resolve(__dirname, "../");
             // 执行渲染函数
-            const actualResult = renderTemplate(inputTemplateText);
+            const actualResult = renderTemplate(inputTemplateText, config_file, context_file, baseDir);
             console.log(actualResult)
             // 从then中获取期望的结果
             const expectedTemplateText = fs.readFileSync(path.join(casesDir, testCase.then.expectedResult), 'utf8');

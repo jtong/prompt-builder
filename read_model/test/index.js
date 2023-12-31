@@ -15,15 +15,27 @@ describe('build imports', function () {
 
         // 解析Java文件
         const javaAST = javaParser.parse(javaContent);
-        let result = read_model(javaAST);
+        let result = read_model(__dirname, {
+            path: "cases/code/NoAnnotationUser.java"
+        });
         console.log(result);
-        expect(result).to.deep.equal([
-            'dev.jtong.training.demo.smart.domain.persistent.model.user.mybatis.*',
-            'org.springframework.beans.factory.annotation.Autowired',
-            'org.springframework.http.HttpStatus',
-            'org.springframework.http.ResponseEntity',
-            'org.springframework.web.bind.annotation.*'
-        ]);
+        expect(result).to.deep.equal(`package dev.jtong.training.demo.smart.domain.persistent.model.user.mybatis;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import java.util.stream.Collectors;
+
+
+public class NoAnnotationUser {
+    private String id;
+    private String name;
+    private int age;
+    private String password;
+}`);
     });
 })
 ;

@@ -1,4 +1,6 @@
+doc
+ai_helper
 spike
 node_modules
 .idea
-ai_helper/prompt_builder
+.DS_Store
