@@ -2,11 +2,15 @@ const fs = require('fs');
 const yaml = require('js-yaml');
 const read_controller = require("./read_controller")
 const read_model = require("./read_model")
-
+const path = require('path')
 
 const reader = {
     controller: read_controller,
-    model: read_model
+    model: read_model,
+    all: function(project_base, related_file){
+        const javaContent = fs.readFileSync(path.join(project_base, related_file.path), 'utf8');
+        return javaContent;
+    }
 }
 function main(project_base, related_files) {
 

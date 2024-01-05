@@ -1,8 +1,8 @@
-## 读取源代码的imports
+## [x] 读取源代码的imports
 
 ### issue
 
-- .*丢掉了*
+- [x] .*丢掉了*
 
 ## 类名和方法依赖识别
 
@@ -41,9 +41,9 @@
 
 ## 读取模型类
 
-- 读取field
+- [x] 读取field
 - 删掉setter、getter，用注释替代
   - [x] 删掉setter、getter，
-- 其他方法保留
+- [x] 其他方法保留
 - 读取constructor
 
