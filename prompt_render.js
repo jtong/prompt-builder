@@ -1,4 +1,4 @@
-const ejs = require('ejs');
+const Handlebars = require('handlebars');
 const yaml = require('js-yaml');
 const fs = require('fs');
 const path = require('path');
@@ -26,24 +26,33 @@ function renderTemplate(templateText, configPath, contextPath, baseDir) {
     // console.log(project.base_path)
 
     // 定义内部上下文
-    const internalContext = {
-        data: {}, // 使用解析的上下文数据
+    // 注册 Handlebars 助手
+    Handlebars.registerHelper('folder_tree', function() {
+        return new Handlebars.SafeString(read_folder_tree(project));
+    });
 
-        folder_tree: function() {
-            return read_folder_tree(project);
-        },
-        related_files: function() {
-            // 读取并解析上下文文件
-            const resolvedContextPath = path.resolve(baseDir, contextPath);
-            const contextContent = fs.readFileSync(resolvedContextPath, 'utf8');
-            const contextData = yaml.load(contextContent);
-            return read_related_files(project.base_path, contextData)
+    Handlebars.registerHelper('related_files', function() {
+        const resolvedContextPath = path.resolve(baseDir, contextPath);
+        const contextContent = fs.readFileSync(resolvedContextPath, 'utf8');
+        const contextData = yaml.load(contextContent);
+        return new Handlebars.SafeString(read_related_files(project.base_path, contextData));
+    });
+
+    Handlebars.registerHelper('related_files_from', function(options) {
+        const templateString = options.fn(this);
+        let trimmedString = templateString.trim();
+        if (trimmedString.startsWith("```")) {
+            const firstNewLineIndex = trimmedString.indexOf('\n') + 1;
+            const lastNewLineIndex = trimmedString.lastIndexOf('\n');
+            trimmedString = trimmedString.substring(firstNewLineIndex, lastNewLineIndex);
         }
-        // 可以添加更多的数据和函数
-    };
+        const contextData = yaml.load(trimmedString);
+        return new Handlebars.SafeString(read_related_files(project.base_path, contextData));
+    });
 
-    // 渲染模板
-    return ejs.render(templateText, internalContext);
+    // 使用 Handlebars 编译和渲染模板
+    const template = Handlebars.compile(templateText);
+    return template({ data: {} });
 }
 
 module.exports = renderTemplate;

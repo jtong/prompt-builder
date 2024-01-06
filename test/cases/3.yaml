@@ -1,0 +1,5 @@
+desc: "测试用例1 - 渲染EJS模板"
+given:
+  targetFile: "3.input.md"
+then:
+  expectedResult: "3.output.md"

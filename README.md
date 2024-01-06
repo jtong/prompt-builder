@@ -110,7 +110,7 @@ project:
 ### folder_tree 函数 (folder_tree Function)
 
 ```ejs
-<%-folder_tree()%>
+{{folder_tree}}
 ```
 
 使用 `folder_tree` 函数可以显示 `config` 下 `base_path` 指定路径的文件树。
@@ -118,9 +118,42 @@ project:
 ### related_files 函数 (related_files Function)
 
 ```ejs
-<%-related_files()%>
+{{related_files}}
 ```
 
 使用 `related_files` 函数时，需要提供 `context` 配置文件。此函数会读取相关文件并生成内容。
 
+
+### related_files_from 函数 (related_files_from Function)
+
+```ejs
+{{#related_files_from}}
+\```yaml
+- path: src/main/java/dev/jtong/training/demo/smart/domain/controllers/UsersController.java
+  reader: controller
+  methods:
+    - changePassword
+- path: src/main/java/dev/jtong/training/demo/smart/domain/controllers/representation/UserVO.java
+  reader: model
+\```
+{{/related_files_from}}
+```
+
+使用 `related_files_of` 函数可以作为类似标签的使用方式，通过将开闭标签之间的内容作为related_files.yml中的内容使用，从而将相关文件内容内联到模版中使用。
+注：上述演示中为了转义，在开闭标签中的 code block 标记之前加了\，因为不是所有的网页markdown渲染工具都支持转义语法，可能会显示出来，如果想看正确的用法可以直接查看 test/cases/3.input.md 。
+
+
+## 支持的reader
+
+### controller reader
+
+用于读取Java代码中的controller，会保留所有的field，可以针对性的要求读取某个函数，会保留函数的所有注解
+
+### model reader
+
+用于读取Java代码中的 model，会保留所有的field，删除掉所有的setter和getter代码。
+
+### all reader
+
+读取文件所有内容，不做任何静态分析和预处理。
 
