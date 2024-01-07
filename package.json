@@ -1,7 +1,7 @@
 {
   "name": "prompt-context-builder",
-  "version": "1.0.6",
-  "description": "",
+  "version": "1.0.7",
+  "description": "Based on project engineering files and other information, automatically generate context related to tasks to save the cost of writing prompt words. ",
   "main": "index.js",
   "bin": {
     "prompt_builder": "./prompt_builder.js"
@@ -9,8 +9,8 @@
   "scripts": {
     "test": "node run-tests.js"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "jtong",
+  "license": "Apache-2.0",
   "dependencies": {
     "fs": "^0.0.1-security",
     "handlebars": "^4.7.8",
