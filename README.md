@@ -54,6 +54,10 @@ Options:
   -x, --context   Path to the YAML context file                         [string]
 ```
 
+## IDE 插件支持
+
+目前提供了vscode插件，项目地址为： https://github.com/jtong/prompt_builder_vscode_plugin
+
 ## config 配置文件说明 (Config File Description)
 
 `config.yaml` 文件的示例如下：
