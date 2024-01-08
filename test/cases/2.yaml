@@ -1,4 +1,4 @@
-desc: "测试用例1 - 渲染EJS模板"
+desc: "测试用例2 - 渲染related_files"
 given:
   targetFile: "2.input.md"
 then:

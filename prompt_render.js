@@ -47,6 +47,9 @@ function renderTemplate(templateText, configPath, contextPath, baseDir) {
             trimmedString = trimmedString.substring(firstNewLineIndex, lastNewLineIndex);
         }
         const contextData = yaml.load(trimmedString);
+        if (contextData === undefined){
+            return new Handlebars.SafeString("");
+        }
         return new Handlebars.SafeString(read_related_files(project.base_path, contextData));
     });
 

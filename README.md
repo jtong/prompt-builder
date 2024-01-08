@@ -143,7 +143,7 @@ project:
 {{/related_files_from}}
 ```
 
-使用 `related_files_of` 函数可以作为类似标签的使用方式，通过将开闭标签之间的内容作为related_files.yml中的内容使用，从而将相关文件内容内联到模版中使用。
+使用 `related_files_from` 函数可以作为类似标签的使用方式，通过将开闭标签之间的内容作为related_files.yml中的内容使用，从而将相关文件内容内联到模版中使用。
 注：上述演示中为了转义，在开闭标签中的 code block 标记之前加了\，因为不是所有的网页markdown渲染工具都支持转义语法，可能会显示出来，如果想看正确的用法可以直接查看 test/cases/3.input.md 。
 
 

@@ -1,5 +1,5 @@
 desc: "测试用例3 - 渲染related_files_from"
 given:
-  targetFile: "3.input.md"
+  targetFile: "4.input.md"
 then:
-  expectedResult: "3.output.md"
+  expectedResult: "4.output.md"
