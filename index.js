@@ -1,5 +1,7 @@
 module.exports = {
-    import_read : require("./import_read"),
+    pipelines: require("./pipelines"),
+    openai_agent: require("./openai_agent"),
+    import_read: require("./import_read"),
     read_controller: require("./read_controller"),
     read_model: require("./read_model"),
     folder_tree: require("./read_folder"),
