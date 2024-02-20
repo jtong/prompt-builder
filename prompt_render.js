@@ -4,6 +4,8 @@ const fs = require('fs');
 const path = require('path');
 const read_folder_tree = require('./read_folder');
 const read_related_files = require('./related_files.js');
+const partialReader = require('./partial');
+
 
 /**
  * 解析并渲染模板
@@ -51,6 +53,25 @@ function renderTemplate(templateText, configPath, contextPath, baseDir) {
             return new Handlebars.SafeString("");
         }
         return new Handlebars.SafeString(read_related_files(project.base_path, contextData));
+    });
+
+    Handlebars.registerHelper('partial', function(options) {
+        // 从 options 中解析 YAML 字符串
+        let trimmedString = options.fn(this).trim();
+        if (trimmedString.startsWith("```")) {
+            const firstNewLineIndex = trimmedString.indexOf('\n') + 1;
+            const lastNewLineIndex = trimmedString.lastIndexOf('\n');
+            trimmedString = trimmedString.substring(firstNewLineIndex, lastNewLineIndex);
+        }
+        const yamlData = yaml.load(trimmedString);
+        const filePath = yamlData.path;
+        const baseDir = project.base_path; // 确保你的模板上下文中包含了 baseDir
+    
+        // 使用 partial.js 读取文件内容
+        const fileContent = partialReader.readPartial(baseDir, filePath);
+    
+        // 返回文件内容，包裹在代码块中
+        return new Handlebars.SafeString(fileContent);
     });
 
     // 使用 Handlebars 编译和渲染模板

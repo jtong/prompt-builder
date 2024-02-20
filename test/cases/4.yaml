@@ -1,4 +1,4 @@
-desc: "测试用例3 - 渲染related_files_from"
+desc: "测试用例4 - 渲染related_files_from"
 given:
   targetFile: "4.input.md"
 then:

@@ -109,11 +109,11 @@ project:
 
 ## 模版文件说明 (Template File Description)
 
-模版文件使用 `ejs` 模版语法，允许在文本中插入相关函数。
+模版文件使用 `handlebars` 模版语法，允许在文本中插入相关函数。
 
 ### folder_tree 函数 (folder_tree Function)
 
-```ejs
+```handlebars
 {{folder_tree}}
 ```
 
@@ -121,7 +121,7 @@ project:
 
 ### related_files 函数 (related_files Function)
 
-```ejs
+```handlebars
 {{related_files}}
 ```
 
@@ -130,7 +130,7 @@ project:
 
 ### related_files_from 函数 (related_files_from Function)
 
-```ejs
+```handlebars
 {{#related_files_from}}
 \```yaml
 - path: src/main/java/dev/jtong/training/demo/smart/domain/controllers/UsersController.java
@@ -145,6 +145,25 @@ project:
 
 使用 `related_files_from` 函数可以作为类似标签的使用方式，通过将开闭标签之间的内容作为related_files.yml中的内容使用，从而将相关文件内容内联到模版中使用。
 注：上述演示中为了转义，在开闭标签中的 code block 标记之前加了\，因为不是所有的网页markdown渲染工具都支持转义语法，可能会显示出来，如果想看正确的用法可以直接查看 test/cases/3.input.md 。
+
+
+### partial 函数 (partial Function)
+
+```handlebars
+{{#partial }}
+\```yaml
+path: /path/to/file
+reader: all
+\```
+{{/partial }}
+```
+
+`partial` 函数允许你直接在模板中嵌入指定文件的内容。你需要在 `{{#partial}}...{{/partial}}` 标签中提供一个 YAML 配置，指定想要读取的文件路径 (`path`) 和使用的读取器 (`reader`)。目前，`reader` 的值固定为 `all`，表示将文件的全部内容读取并嵌入到模板中。
+
+- `path`: 指定想要读取内容的文件相对路径或绝对路径。路径是相对于在配置文件中定义的 `base_path` 的路径。
+- `reader`: 指定读取文件内容的方法。当前仅支持 `all` 作为值，意味着读取整个文件的内容。
+
+注：上述演示中为了转义，在开闭标签中的 code block 标记之前加了\，因为不是所有的网页markdown渲染工具都支持转义语法，可能会显示出来，如果想看正确的用法可以直接查看 test/cases/5.input.md 。
 
 
 ## 支持的reader

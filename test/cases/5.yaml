@@ -1,0 +1,5 @@
+desc: "测试用例5 - 渲染partial"
+given:
+  targetFile: "5.input.md"
+then:
+  expectedResult: "5.output.md"
