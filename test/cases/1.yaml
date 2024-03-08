@@ -1,5 +1,6 @@
 desc: "测试用例1 - 渲染folder_tree"
 given:
   targetFile: "1.input.md"
+  config_file: "test/cases/case1/config.yml" # 这里指向新的配置文件
 then:
   expectedResult: "1.output.md"

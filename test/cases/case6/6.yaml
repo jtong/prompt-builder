@@ -1,0 +1,6 @@
+desc: "测试用例6 - 通配符模式忽略"
+given:
+  targetFile: "6.input.md"
+  config_file: "test/cases/case6/config.yml"
+then:
+  expectedResult: "6.output.md"

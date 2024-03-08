@@ -1,0 +1,5 @@
+project:
+  base_path: "test/cases/case1/project"
+  ignore:
+    path: []
+    file: []
