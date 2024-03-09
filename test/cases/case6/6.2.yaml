@@ -1,0 +1,6 @@
+desc: "测试用例6.2 - '**' 模式忽略"
+given:
+  targetFile: "6.2.input.md"
+  config_file: "test/cases/case6/config6.2.yml"
+then:
+  expectedResult: "6.2.output.md"

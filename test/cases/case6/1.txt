@@ -1,0 +1,87 @@
+好的,我们直接在 test/cases/case6 目录下添加这两个测试用例。
+
+首先,更新 test/cases/case6 目录下的文件:
+
+6.1.input.md:
+```
+
+```
+
+6.1.output.md:
+```
+
+```
+
+:
+```yaml
+
+```
+
+:
+```yaml
+
+```
+
+:
+```
+
+```
+
+:
+```
+
+```
+
+:
+```yaml
+
+```
+
+config6.2.yml:
+```yaml
+project:
+  base_path: "test/cases/case6/project6.2"
+  ignore:
+    path:
+      - "**/to_ignore"
+    file: []
+```
+
+然后,在 test/cases/case6 下创建两个新的 project 目录:
+
+project6.1:
+```
+project6.1
+├── folder1
+│   ├── subfolder1
+│   │   └── file1.txt
+│   ├── subfolder2
+│   │   └── file2.txt
+│   └── to_ignore
+│       └── ignored_file.txt
+└── folder2
+    ├── file3.txt
+    ├── subfolder3
+    │   └── file4.txt
+    └── to_ignore
+        └── ignored_file.txt
+```
+
+project6.2:
+```
+project6.2
+├── folder1
+│   ├── subfolder1
+│   │   └── file1.txt
+│   └── to_ignore
+│       └── ignored_file.txt
+└── folder2
+    ├── file2.txt
+    └── subfolder2
+        └── to_ignore
+            └── ignored_file.txt
+```
+
+现在,您可以运行测试,看看这两个新的测试用例是否都通过了。这将确保我们的实现正确处理了 "*/" 和 "**" 模式。
+
+如果您有任何其他问题或需求,请随时告诉我。

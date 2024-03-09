@@ -3,23 +3,34 @@ const path = require('path');
 
 function read_folder_tree(project) {
     const basePath = path.resolve(project.base_path);
-    const ignorePaths = new Set(project.ignore.path.map(p => path.resolve(basePath, p)));
+    const ignorePaths = project.ignore.path;
     const ignoreFiles = new Set(project.ignore.file);
     let result = ""
-// 检查是否应该忽略路径
+
+    // 将通配符模式转换为正则表达式
+    function convertToRegex(pattern) {
+        return new RegExp(`^${pattern.split(/[\\/]/).map(part => {
+            if (part === '**') return '(?:.*[\\\\/])?';
+            return part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\\\*\\\*/g, '(?:.*[\\\\/])?').replace(/\\\*/g, '[^\\\\/]*');
+        }).join('')}$`);
+    }
+
+    // 检查是否应该忽略路径
     function shouldIgnore(filePath) {
         if (ignoreFiles.has(path.basename(filePath))) {
             return true;
         }
+        const relPath = path.relative(basePath, filePath).replace(/\\/g, '/');
         for (let ignorePath of ignorePaths) {
-            if (filePath.startsWith(ignorePath)) {
+            const regex = convertToRegex(ignorePath);
+            if (regex.test(relPath)) {
                 return true;
             }
         }
         return false;
     }
 
-// 递归遍历目录
+    // 递归遍历目录
     function walkDir(dir, prefix = '', lastItem = true, isRoot = true) {
         if (shouldIgnore(dir)) return;
 
@@ -32,7 +43,6 @@ function read_folder_tree(project) {
             // 根目录下文件和文件夹没有缩进，但显示相应的符号
             const linePrefix = isRoot ? '' : prefix;
             const connector = isLast ? '└── ' : '├── ';
-            // console.log(`${linePrefix}${connector}${file}`);
             result +=`${linePrefix}${connector}${file}\n`;
 
             if (stats.isDirectory()) {
@@ -41,8 +51,7 @@ function read_folder_tree(project) {
         });
     }
 
-// 开始遍历
-//     console.log('.');
+    // 开始遍历
     result += `.\n`;
     walkDir(basePath, '', true, true);
     return result;

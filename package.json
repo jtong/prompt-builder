@@ -18,6 +18,7 @@
     "https-proxy-agent": "^7.0.2",
     "java-parser": "^2.2.0",
     "js-yaml": "^4.1.0",
+    "minimatch": "^9.0.3",
     "openai": "^4.24.7",
     "pngjs": "^5.0.0",
     "readdirp": "^3.6.0",

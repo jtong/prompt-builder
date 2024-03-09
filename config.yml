@@ -12,7 +12,6 @@ project:
       - spike
       - doc
       - .git
-      - config.yml
     file:
       - .DS_Store
 input:

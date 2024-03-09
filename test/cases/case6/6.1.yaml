@@ -1,0 +1,6 @@
+desc: "测试用例6.1 - '*/' 模式忽略"
+given:
+  targetFile: "6.1.input.md"
+  config_file: "test/cases/case6/config6.1.yml"
+then:
+  expectedResult: "6.1.output.md"
