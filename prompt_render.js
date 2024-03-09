@@ -74,6 +74,30 @@ function renderTemplate(templateText, configPath, contextPath, baseDir) {
         return new Handlebars.SafeString(fileContent);
     });
 
+    Handlebars.registerHelper('all_files_markdown', function() {
+        const jsonResult = {};
+        read_folder_tree(project, jsonResult);
+
+        const allFiles = [];
+
+        function traverseJson(jsonObj) {
+            if (jsonObj.isDirectory) {
+                if (jsonObj.children) {
+                    jsonObj.children.forEach(child => traverseJson(child));
+                }
+            } else {
+                allFiles.push({
+                    path: jsonObj.path,
+                    reader: 'all'
+                });
+            }
+        }
+
+        traverseJson(jsonResult);
+
+        return new Handlebars.SafeString(read_related_files(project.base_path, allFiles));
+    });
+
     // 使用 Handlebars 编译和渲染模板
     const template = Handlebars.compile(templateText);
     return template({ data: {} });

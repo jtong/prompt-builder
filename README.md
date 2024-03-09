@@ -54,6 +54,19 @@ Options:
   -x, --context   Path to the YAML context file                         [string]
 ```
 
+
+## 打包整个项目作为上下文
+
+```bash
+context_packer -c <config_file> -o <output_zip>
+```
+
+- `-c, --config <config_file>`: YAML 配置文件路径
+- `-o, --output <output_zip>`: 输出的 zip 文件路径
+
+`context_packer` 命令读取 `config.yml` 文件,根据配置文件中指定的过滤规则过滤文件,并将过滤后的文件按原始目录结构压缩到 zip 文件中,以便将整个项目打包作为上下文。该命令主要服务于Claude3等长上下文LLM。
+
+
 ## IDE 插件支持
 
 目前提供了vscode插件，项目地址为： https://github.com/jtong/prompt_builder_vscode_plugin
@@ -165,6 +178,20 @@ reader: all
 
 注：上述演示中为了转义，在开闭标签中的 code block 标记之前加了\，因为不是所有的网页markdown渲染工具都支持转义语法，可能会显示出来，如果想看正确的用法可以直接查看 test/cases/5.input.md 。
 
+当然,我来为`all_files_markdown`助手写一个说明,你可以将其添加到项目的`README.md`文件中。
+
+
+## all_files_markdown 函数 (all_files_markdown Function)
+
+`all_files_markdown`用于遍历项目中的所有文件,并以Markdown格式输出它们的内容。这个助手根据`config.yml`的过滤规则来选择要输出的文件，保证输出的文件与folder_tree的文件相同。
+
+### 用法
+
+在模板文件中,使用以下语法来调用`all_files_markdown`助手:
+
+```handlebars
+{{ all_files_markdown }}
+```
 
 ## 支持的reader
 

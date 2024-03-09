@@ -1,0 +1,6 @@
+desc: "测试用例7 - 测试all_files_markdown助手"
+given:
+  targetFile: "7.input.md"
+  config_file: "test/cases/case7/config.yml"
+then:
+  expectedResult: "7.output.md"
