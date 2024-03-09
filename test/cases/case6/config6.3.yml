@@ -2,7 +2,5 @@ project:
   base_path: "test/cases/case6/project"
   ignore:
     path:
-      - "to_ignore"
-      - "*/to_ignore"
-      - "*/*/to_ignore"
+      - "*/**/to_ignore"
     file: []

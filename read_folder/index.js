@@ -1,19 +1,12 @@
 const fs = require('fs');
 const path = require('path');
+const {minimatch} = require('minimatch');
 
 function read_folder_tree(project) {
     const basePath = path.resolve(project.base_path);
     const ignorePaths = project.ignore.path;
     const ignoreFiles = new Set(project.ignore.file);
     let result = ""
-
-    // 将通配符模式转换为正则表达式
-    function convertToRegex(pattern) {
-        return new RegExp(`^${pattern.split(/[\\/]/).map(part => {
-            if (part === '**') return '(?:.*[\\\\/])?';
-            return part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\\\*\\\*/g, '(?:.*[\\\\/])?').replace(/\\\*/g, '[^\\\\/]*');
-        }).join('')}$`);
-    }
 
     // 检查是否应该忽略路径
     function shouldIgnore(filePath) {
@@ -22,8 +15,7 @@ function read_folder_tree(project) {
         }
         const relPath = path.relative(basePath, filePath).replace(/\\/g, '/');
         for (let ignorePath of ignorePaths) {
-            const regex = convertToRegex(ignorePath);
-            if (regex.test(relPath)) {
+            if (minimatch(relPath, ignorePath)) {
                 return true;
             }
         }
