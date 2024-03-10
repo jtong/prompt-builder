@@ -4,7 +4,7 @@ const path = require('path');
 const yaml = require('js-yaml');
 const yargs = require('yargs/yargs');
 const { hideBin } = require('yargs/helpers');
-const renderTemplate = require('./prompt_render');
+const { renderTemplate } = require('./prompt_render');
 
 
 // 解析命令行参数

@@ -24,8 +24,14 @@ function renderTemplate(templateText, configPath, contextPath, baseDir) {
     let project = config.project;
 
     project.base_path = path.resolve(baseDir, project.base_path);
-
     // console.log(project.base_path)
+
+    return renderTemplate_ConfigObject(templateText, config, contextPath, baseDir);
+
+}
+
+function renderTemplate_ConfigObject(templateText, config, contextPath, baseDir) {
+    const project = config.project;
 
     // 定义内部上下文
     // 注册 Handlebars 助手
@@ -103,4 +109,7 @@ function renderTemplate(templateText, configPath, contextPath, baseDir) {
     return template({ data: {} });
 }
 
-module.exports = renderTemplate;
+module.exports = {
+    renderTemplate,
+    renderTemplate_ConfigObject
+};
