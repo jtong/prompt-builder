@@ -30,6 +30,17 @@ function renderTemplate(templateText, configPath, contextPath, baseDir) {
 
 }
 
+function read_all(project_base, config) {
+    const filePath = path.join(project_base, config.path);
+    try {
+        const content = fs.readFileSync(filePath, 'utf8');
+        return content;
+    } catch (error) {
+        console.error(`Error reading file: ${filePath}`, error);
+        return "Error reading file";
+    }
+}
+
 function renderTemplate_ConfigObject(templateText, config, contextPath, baseDir) {
     const project = config.project;
 
@@ -102,6 +113,44 @@ function renderTemplate_ConfigObject(templateText, config, contextPath, baseDir)
         traverseJson(jsonResult);
 
         return new Handlebars.SafeString(read_related_files(project.base_path, allFiles));
+    });
+
+    Handlebars.registerHelper('all_files_xml', function() {
+        const jsonResult = {};
+        read_folder_tree(project, jsonResult);
+
+        const allFiles = [];
+
+        function traverseJson(jsonObj) {
+            if (jsonObj.isDirectory) {
+                if (jsonObj.children) {
+                    jsonObj.children.forEach(child => traverseJson(child));
+                }
+            } else {
+                allFiles.push({
+                    path: jsonObj.path,
+                    reader: 'all'
+                });
+            }
+        }
+
+        traverseJson(jsonResult);
+
+        let xmlContent = '';
+        for (const file of allFiles) {
+            const fileContent = read_all(project.base_path, file);
+            xmlContent += `<file>
+    <path>${file.path}</path>
+    <content>
+<![CDATA[
+${fileContent}
+]]>
+    </content>
+</file>
+`;
+        }
+
+        return new Handlebars.SafeString(xmlContent);
     });
 
     // 使用 Handlebars 编译和渲染模板
