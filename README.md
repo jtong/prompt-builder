@@ -181,17 +181,51 @@ reader: all
 当然,我来为`all_files_markdown`助手写一个说明,你可以将其添加到项目的`README.md`文件中。
 
 
-## all_files_markdown 函数 (all_files_markdown Function)
+### all_files_markdown 函数 (all_files_markdown Function)
 
 `all_files_markdown`用于遍历项目中的所有文件,并以Markdown格式输出它们的内容。这个助手根据`config.yml`的过滤规则来选择要输出的文件，保证输出的文件与folder_tree的文件相同。
 
-### 用法
+#### 用法
 
 在模板文件中,使用以下语法来调用`all_files_markdown`助手:
 
 ```handlebars
 {{ all_files_markdown }}
 ```
+
+### all_files_xml 函数(all_files_xml Function)
+
+`all_files_xml`用于遍历项目中的所有文件,并以XML格式输出它们的相对路径和内容。这个助手根据`config.yml`的过滤规则来选择要输出的文件,保证输出的文件与`folder_tree`的文件相同。
+
+#### 用法
+
+在模板文件中,使用以下语法来调用`all_files_xml`助手:
+
+```handlebars
+{{ all_files_xml }}
+```
+
+#### 输出格式
+
+`all_files_xml`助手将为每个文件生成以下XML格式的内容:
+
+```xml
+<file>
+    <path>{文件的相对路径}</path>
+    <content>
+<![CDATA[
+{文件的内容}
+]]>
+    </content>
+</file>
+```
+
+其中:
+
+- `{文件的相对路径}` 表示文件相对于工程根目录的路径。
+- `{文件的内容}` 表示文件的实际内容,并被包裹在 `<![CDATA[...]]>` 部分中,以确保内容中的任何XML特殊字符不会被解析为XML标记。
+
+这样,`all_files_xml`助手函数的文档就被添加到了`README.md`文件中。您可以根据需要对文档进行进一步调整和完善。
 
 ## 支持的reader
 
