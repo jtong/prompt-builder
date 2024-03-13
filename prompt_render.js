@@ -139,13 +139,10 @@ function renderTemplate_ConfigObject(templateText, config, contextPath, baseDir)
         let xmlContent = '';
         for (const file of allFiles) {
             const fileContent = read_all(project.base_path, file);
-            xmlContent += `<file>
-    <path>${file.path}</path>
-    <content>
+            xmlContent += `<file paht="${file.path}">
 <![CDATA[
 ${fileContent}
 ]]>
-    </content>
 </file>
 `;
         }

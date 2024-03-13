@@ -210,13 +210,10 @@ reader: all
 `all_files_xml`助手将为每个文件生成以下XML格式的内容:
 
 ```xml
-<file>
-    <path>{文件的相对路径}</path>
-    <content>
+<file path="{文件的相对路径}">
 <![CDATA[
 {文件的内容}
 ]]>
-    </content>
 </file>
 ```
 
