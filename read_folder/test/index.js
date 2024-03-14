@@ -38,7 +38,7 @@ describe('read_folder_tree 函数测试', function() {
         it(testCase.desc, function() {
             const project = {
                 base_path: path.join(dir, testCase.given.project_dir),
-                ignore: testCase.given.ignore
+                ...testCase.given
             };
 
             const jsonResult = {};

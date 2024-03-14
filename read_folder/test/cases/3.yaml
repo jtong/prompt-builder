@@ -1,0 +1,21 @@
+desc: "测试用例3 - 使用 filter_in 规则过滤文件"
+given:
+  project_dir: "project"
+  ignore:
+    path: []
+    file: []
+  filter_in:
+    path:
+      - "*.txt"
+then:
+  expected_folder_tree: |
+    .
+    └── file1.txt
+  expected_json_result:
+    name: "."
+    path: "./"
+    isDirectory: true
+    children:
+      - "isDirectory": false
+        "name": "file1.txt"
+        "path": "file1.txt"

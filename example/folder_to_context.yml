@@ -1,0 +1,26 @@
+project:
+  base_path: ./
+  ignore:
+    path:
+      - "*/.idea"
+      - ai_helper
+      - config.yml
+      - prompt_builder_vscode_plugin/dist
+      - prompt-context-builder/doc
+      - prompt_builder_vscode_plugin/media
+      - "**/*.png"
+      - "**/.DS_Store"
+      - "**/LICENSE.txt"
+      - "**/package-lock.json"
+      - repo_to_git.yml
+  filter:
+    path:
+      - "**/*.py"
+input:
+  git_clone_to_path: ai_helper/prompt_builder/git_repo
+  instruction: |
+    无
+  skip_clone_if_folder_exist: true  
+output:     
+  prompt:
+    path: ai_helper/prompt_builder/output/

@@ -1,8 +1,9 @@
-desc: "测试用例1 - 生成文件树字符串和 JSON 对象"
+desc: "测试用例1.3 - 生成文件树字符串和 JSON 对象,ignore"
 given:
   project_dir: "project"
   ignore:
-    path: []
+    path:
+      - "*/ignored.*"
     file: []
 then:
   expected_folder_tree: |
@@ -10,8 +11,7 @@ then:
     ├── file1.txt
     ├── ignored.md
     └── subdir
-        ├── file2.txt
-        └── ignored.js
+        └── file2.txt
   expected_json_result:
     name: "."
     path: "./"
@@ -30,6 +30,3 @@ then:
           - name: "file2.txt"
             path: "subdir/file2.txt"
             isDirectory: false
-          - "isDirectory": false
-            "name": "ignored.js"
-            "path": "subdir/ignored.js"

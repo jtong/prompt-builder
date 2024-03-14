@@ -4,14 +4,15 @@ given:
   ignore:
     path: []
     file: []
+  filter_in:
+    path:
+      - "**/*.txt"
 then:
   expected_folder_tree: |
     .
     ├── file1.txt
-    ├── ignored.md
     └── subdir
-        ├── file2.txt
-        └── ignored.js
+        └── file2.txt
   expected_json_result:
     name: "."
     path: "./"
@@ -20,9 +21,6 @@ then:
       - name: "file1.txt"
         path: "file1.txt"
         isDirectory: false
-      - "isDirectory": false
-        "name": "ignored.md"
-        "path": "ignored.md"
       - name: "subdir"
         path: "subdir"
         isDirectory: true
@@ -30,6 +28,3 @@ then:
           - name: "file2.txt"
             path: "subdir/file2.txt"
             isDirectory: false
-          - "isDirectory": false
-            "name": "ignored.js"
-            "path": "subdir/ignored.js"
