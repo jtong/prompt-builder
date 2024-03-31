@@ -192,19 +192,17 @@ project:
 {{#partial }}
 \```yaml
 path: /path/to/file
-reader: all
+render: false
 \```
 {{/partial }}
 ```
 
-`partial` 函数允许你直接在模板中嵌入指定文件的内容。你需要在 `{{#partial}}...{{/partial}}` 标签中提供一个 YAML 配置，指定想要读取的文件路径 (`path`) 和使用的读取器 (`reader`)。目前，`reader` 的值固定为 `all`，表示将文件的全部内容读取并嵌入到模板中。
+`partial` 函数允许你直接在模板中嵌入指定文件的全部内容。你需要在 `{{#partial}}...{{/partial}}` 标签中提供一个 YAML 配置，指定想要读取的文件路径 (`path`) 和是否需要渲染 (render)。
 
 - `path`: 指定想要读取内容的文件相对路径或绝对路径。路径是相对于在配置文件中定义的 `base_path` 的路径。
-- `reader`: 指定读取文件内容的方法。当前仅支持 `all` 作为值，意味着读取整个文件的内容。
+- `render`: 指定是否需要将文件内容作为 prompt-context-builder 的模版进行渲染。默认为 true ，表示需要渲染。如果设置为 false ，则直接返回文件内容而不进行渲染。
 
 注：上述演示中为了转义，在开闭标签中的 code block 标记之前加了\，因为不是所有的网页markdown渲染工具都支持转义语法，可能会显示出来，如果想看正确的用法可以直接查看 test/cases/5.input.md 。
-
-当然,我来为`all_files_markdown`助手写一个说明,你可以将其添加到项目的`README.md`文件中。
 
 
 ### all_files_markdown 函数 (all_files_markdown Function)

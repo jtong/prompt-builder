@@ -12,6 +12,8 @@ project:
       - spike
       - doc
       - .git
+      - LICENSE.txt
+      - "**/ai_helper"
     file:
       - .DS_Store
 input:
@@ -23,7 +25,9 @@ input:
 
       {{{content}}}
 
-      ```
+      ```  
+  instruction: |
+    给我一个测试partial新功能，测试render为true的时候，按照test中数据驱动的方式给我，参考5.yaml，写一个5.1.yaml，并准备对应的md文件与5.yaml做数据隔离      
 output:     
   prompt:
     path: ai_helper/prompt_builder/output/

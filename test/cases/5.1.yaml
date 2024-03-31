@@ -1,0 +1,5 @@
+desc: "测试用例5.1 - 渲染partial,测试render为true"
+given:  
+  targetFile: "5.1.input.md"
+then:
+  expectedResult: "5.1.output.md"

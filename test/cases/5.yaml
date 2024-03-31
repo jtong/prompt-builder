@@ -1,4 +1,4 @@
-desc: "测试用例5 - 渲染partial"
+desc: "测试用例5 - 渲染partial，render为false"
 given:
   targetFile: "5.input.md"
 then:

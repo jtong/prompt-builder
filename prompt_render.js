@@ -88,7 +88,16 @@ function renderTemplate_ConfigObject(templateText, config, contextPath, baseDir)
         const fileContent = partialReader.readPartial(baseDir, filePath);
     
         // 返回文件内容，包裹在代码块中
-        return new Handlebars.SafeString(fileContent);
+        // return new Handlebars.SafeString(fileContent);
+
+        const shouldRender = yamlData.render !== false; // 默认为 true
+        if (shouldRender) {
+            // 如果需要渲染,调用 renderTemplate_ConfigObject 处理文件内容
+            return new Handlebars.SafeString(renderTemplate_ConfigObject(fileContent, config, contextPath, baseDir));
+        } else {
+            // 否则直接返回文件内容
+            return new Handlebars.SafeString(fileContent);
+        }
     });
 
     Handlebars.registerHelper('all_files_markdown', function() {
