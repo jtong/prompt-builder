@@ -36,7 +36,7 @@ describe('EJS模板渲染测试', function() {
         const testCase = yaml.load(fs.readFileSync(filePath, 'utf8'));
 
         it(testCase.desc, function() {
-            if(testCase.desc=="测试用例5.1 - 渲染partial,测试render为true"){
+            if(testCase.desc=="测试用例6.1 - '*/' 模式忽略"){
                 console.log()
 
             }

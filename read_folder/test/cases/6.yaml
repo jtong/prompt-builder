@@ -1,0 +1,34 @@
+desc: "测试用例6 - 测试filters属性"
+given:
+  project_dir: "project"
+  filters:
+    - ignore:
+        - "**/*.js"
+    - filter_in:
+        - "**/*.md"
+        - "**/*.txt"
+then:
+  expected_folder_tree: |
+    .
+    ├── file1.txt
+    ├── ignored.md
+    └── subdir
+        └── file2.txt
+  expected_json_result:
+    name: "."
+    path: "./"
+    isDirectory: true
+    children:
+      - name: "file1.txt"
+        path: "file1.txt"
+        isDirectory: false
+      - name: "ignored.md"
+        path: "ignored.md"
+        isDirectory: false
+      - name: "subdir"
+        path: "subdir"
+        isDirectory: true
+        children:
+          - name: "file2.txt"
+            path: "subdir/file2.txt"
+            isDirectory: false

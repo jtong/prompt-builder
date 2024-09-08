@@ -4,27 +4,34 @@ const {minimatch} = require('minimatch');
 
 function read_folder_tree(project, jsonResult = {}) {
     const basePath = path.resolve(project.base_path);
-    const ignorePaths = project.ignore.path || [];
-    const ignoreFiles = new Set(project.ignore.file || []);
-    const filterInPaths = project.filter_in ? project.filter_in.path : [];
 
-    // 第一部分: 按照 ignore 规则过滤,生成初始的 jsonResult
-    const initialJsonResult = buildJsonTree(basePath, ignorePaths, ignoreFiles, '.');
+    // Check if filters exist and use them, otherwise fall back to existing ignore and filter_in
+    const filters = project.filters || [
+        { ignore: project.ignore.path || []} ,
+        project.filter_in ? { filter_in: project.filter_in.path } : {}
+    ].filter(Boolean);
 
-    // 第二部分: 基于初始的 jsonResult,进行 filter_in 规则的过滤,生成最终的 jsonResult
-    const finalJsonResult = filterInPaths.length === 0
-        ? initialJsonResult
-        : filterJsonTree(initialJsonResult, filterInPaths, '.');
-    jsonResult.children= finalJsonResult.children;
+    // Start with full tree
+    let currentTree = buildFullTree(basePath, '.');
+
+    // Apply filters sequentially
+    for (const filter of filters) {
+        if (filter.ignore) {
+            currentTree = applyIgnoreFilter(currentTree, filter.ignore || []);
+        } else if (filter.filter_in) {
+            currentTree = applyFilterIn(currentTree, filter.filter_in);
+        }
+    }
+
+    // Assign the final result to jsonResult
+    Object.assign(jsonResult, currentTree);
     jsonResult.name = ".";
     jsonResult.path = "./";
-    jsonResult.isDirectory = finalJsonResult.isDirectory;
-    // 第三部分: 根据最终的 jsonResult 生成文本形式的树状结构
-    return buildFolderTree(finalJsonResult);
+    // Generate the folder tree text
+    return buildFolderTree(currentTree);
 }
 
-// 按照 ignore 规则构建初始的 JSON 树
-function buildJsonTree(dir, ignorePaths, ignoreFiles, relativePath) {
+function buildFullTree(dir, relativePath) {
     const result = {
         name: path.basename(dir),
         path: relativePath,
@@ -39,17 +46,12 @@ function buildJsonTree(dir, ignorePaths, ignoreFiles, relativePath) {
         const stats = fs.statSync(filePath);
         const relPath = path.join(relativePath, file).replace(/\\/g, '/');
 
-        if (ignoreFiles.has(file) || ignorePaths.some(pattern => minimatch(relPath, pattern))) {
-            continue;
-        }
-
         if (stats.isDirectory()) {
-            const childTree = buildJsonTree(filePath, ignorePaths, ignoreFiles, path.join(relativePath, file));
-            result.children.push(childTree);
+            result.children.push(buildFullTree(filePath, relPath));
         } else {
             result.children.push({
                 name: file,
-                path: path.join(relativePath, file),
+                path: relPath,
                 isDirectory: false
             });
         }
@@ -58,29 +60,35 @@ function buildJsonTree(dir, ignorePaths, ignoreFiles, relativePath) {
     return result;
 }
 
-// 基于初始的 jsonResult 和 filter_in 规则,生成最终的 jsonResult
-function filterJsonTree(jsonTree, filterInPaths, relativePath) {
-    const result = {
-        name: jsonTree.name,
-        path: relativePath,
-        isDirectory: jsonTree.isDirectory,
-        children: []
-    };
+function applyIgnoreFilter(tree, ignorePaths) {
+    if (!tree.isDirectory) {
+        return ignorePaths.some(pattern => minimatch(tree.path, pattern)) ? null : tree;
+    }
+    // Check if the current directory should be ignored
+    if (ignorePaths.some(pattern => minimatch(tree.path, pattern))) {
+        return null; // Ignore the entire directory and its contents
+    }
+    const filteredChildren = tree.children
+        .map(child => applyIgnoreFilter(child, ignorePaths))
+        .filter(Boolean);
 
-    for (const child of jsonTree.children) {
-        const shouldInclude = filterInPaths.some(pattern => minimatch(child.path, pattern));
-
-        if (child.isDirectory) {
-            const filteredChild = filterJsonTree(child, filterInPaths, child.path);
-            if (shouldInclude || filteredChild.children.length > 0) {
-                result.children.push(filteredChild);
-            }
-        } else if (shouldInclude) {
-            result.children.push(child);
-        }
+    if (filteredChildren.length === 0 && ignorePaths.some(pattern => minimatch(tree.path, pattern))) {
+        return null;
     }
 
-    return result;
+    return { ...tree, children: filteredChildren };
+}
+
+function applyFilterIn(tree, filterInPaths) {
+    if (!tree.isDirectory) {
+        return filterInPaths.some(pattern => minimatch(tree.path, pattern)) ? tree : null;
+    }
+
+    const filteredChildren = tree.children
+        .map(child => applyFilterIn(child, filterInPaths))
+        .filter(Boolean);
+
+    return filteredChildren.length > 0 ? { ...tree, children: filteredChildren } : null;
 }
 
 // 基于最终的 jsonResult 生成文本形式的树状结构

@@ -1,0 +1,36 @@
+desc: "测试用例7 - 测试filters属性存在时忽略同级的ignore和filter_in"
+given:
+  project_dir: "project"
+  ignore:
+    path:
+      - "**/*.txt"
+    file: []
+  filter_in:
+    path:
+      - "**/*.md"
+  filters:
+    - ignore:
+        - "**/*.md"
+    - filter_in:
+        - "**/*.txt"
+then:
+  expected_folder_tree: |
+    .
+    ├── file1.txt
+    └── subdir
+        └── file2.txt
+  expected_json_result:
+    name: "."
+    path: "./"
+    isDirectory: true
+    children:
+      - name: "file1.txt"
+        path: "file1.txt"
+        isDirectory: false
+      - name: "subdir"
+        path: "subdir"
+        isDirectory: true
+        children:
+          - name: "file2.txt"
+            path: "subdir/file2.txt"
+            isDirectory: false
