@@ -1,0 +1,31 @@
+desc: "测试用例8 - 测试filters属性：先filter_in后ignore"
+given:
+  project_dir: "project"
+  filters:
+    - filter_in:
+        - "**/subdir/**"
+        - "**/*.md"
+    - ignore:
+        - "**/*.js"
+        - "**/file1*"
+then:
+  expected_folder_tree: |
+    .
+    ├── ignored.md
+    └── subdir
+        └── file2.txt
+  expected_json_result:
+    name: "."
+    path: "./"
+    isDirectory: true
+    children:
+      - name: "ignored.md"
+        path: "ignored.md"
+        isDirectory: false
+      - name: "subdir"
+        path: "subdir"
+        isDirectory: true
+        children:
+          - name: "file2.txt"
+            path: "subdir/file2.txt"
+            isDirectory: false
