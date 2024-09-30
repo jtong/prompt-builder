@@ -1,13 +1,17 @@
 const fs = require('fs');
 const path = require('path');
-const {minimatch} = require('minimatch');
+const { minimatch } = require('minimatch');
+
+const options = {
+    dot: true  // 允许匹配以点开头的文件和目录
+};
 
 function read_folder_tree(project, jsonResult = {}) {
     const basePath = path.resolve(project.base_path);
 
     // Check if filters exist and use them, otherwise fall back to existing ignore and filter_in
     const filters = project.filters || [
-        { ignore: project.ignore.path || []} ,
+        { ignore: project.ignore.path || [] },
         project.filter_in ? { filter_in: project.filter_in.path } : {}
     ].filter(Boolean);
 
@@ -62,17 +66,17 @@ function buildFullTree(dir, relativePath) {
 
 function applyIgnoreFilter(tree, ignorePaths) {
     if (!tree.isDirectory) {
-        return ignorePaths.some(pattern => minimatch(tree.path, pattern)) ? null : tree;
+        return ignorePaths.some(pattern => minimatch(tree.path, pattern, options)) ? null : tree;
     }
     // Check if the current directory should be ignored
-    if (ignorePaths.some(pattern => minimatch(tree.path, pattern))) {
+    if (ignorePaths.some(pattern => minimatch(tree.path, pattern, options))) {
         return null; // Ignore the entire directory and its contents
     }
     const filteredChildren = tree.children
         .map(child => applyIgnoreFilter(child, ignorePaths))
         .filter(Boolean);
 
-    if (filteredChildren.length === 0 && ignorePaths.some(pattern => minimatch(tree.path, pattern))) {
+    if (filteredChildren.length === 0 && ignorePaths.some(pattern => minimatch(tree.path, pattern, options))) {
         return null;
     }
 
@@ -81,7 +85,7 @@ function applyIgnoreFilter(tree, ignorePaths) {
 
 function applyFilterIn(tree, filterInPaths) {
     if (!tree.isDirectory) {
-        return filterInPaths.some(pattern => minimatch(tree.path, pattern)) ? tree : null;
+        return filterInPaths.some(pattern => minimatch(tree.path, pattern, options)) ? tree : null;
     }
 
     const filteredChildren = tree.children
@@ -99,7 +103,7 @@ function buildFolderTree(jsonTree, prefix = '', isLast = true, isRoot = true) {
 
     if (isRoot) {
         result += `.\n`;
-        childPrefix= '';
+        childPrefix = '';
     } else {
         result += `${prefix}${connector}${jsonTree.name}\n`;
     }
