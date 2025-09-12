@@ -2,4 +2,6 @@ spike
 node_modules
 .idea
 ai_helper/prompt_builder
+.ai_helper/prompt_builder
 .DS_Store
+.ai_helper/agent

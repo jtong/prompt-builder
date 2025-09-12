@@ -282,9 +282,7 @@ render: false
 
 ```xml
 <file path="{文件的相对路径}">
-<![CDATA[
 {文件的内容}
-]]>
 </file>
 ```
 
