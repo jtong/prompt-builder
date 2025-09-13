@@ -1,0 +1,6 @@
+desc: "测试用例7.4 - 测试read_only_references助手在没有配置时输出空字符串"
+given:
+  targetFile: "7.4.input.md"
+  config_file: "test/cases/case7/config7.4.yml"
+then:
+  expectedResult: "7.4.output.md"

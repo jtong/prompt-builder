@@ -1,0 +1,15 @@
+project:
+  base_path: "test/cases/case7/project"
+  filters:
+    - filter_in:
+        - "**/*.txt"
+        - "**/*.md"
+        - "**/*.js"
+read_only_references:
+  - folder:
+      base_path: "test/cases/case7/reference_project"
+      desc: "参考项目"
+      filters:
+        - filter_in:
+            - "**/*.txt"
+            - "**/*.md"

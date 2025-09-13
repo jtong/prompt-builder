@@ -36,7 +36,7 @@ describe('EJS模板渲染测试', function() {
         const testCase = yaml.load(fs.readFileSync(filePath, 'utf8'));
 
         it(testCase.desc, function() {
-            if(testCase.desc=="测试用例6.1 - '*/' 模式忽略"){
+            if(testCase.desc=="测试用例7.3 - 测试read_only_references助手"){
                 console.log()
 
             }

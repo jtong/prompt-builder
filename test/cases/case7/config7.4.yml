@@ -1,0 +1,7 @@
+project:
+  base_path: "test/cases/case7/project"
+  filters:
+    - filter_in:
+        - "**/*.txt"
+        - "**/*.md"
+        - "**/*.js"
