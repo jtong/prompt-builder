@@ -1,0 +1,6 @@
+desc: "测试用例7.2 - show_content_filters与all_files_xml集成测试"
+given:
+  targetFile: "7.2.input.md"
+  config_file: "test/cases/case7/config7.2.yml"
+then:
+  expectedResult: "7.2.output.md"

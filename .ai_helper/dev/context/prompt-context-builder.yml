@@ -1,0 +1,25 @@
+project:
+  base_path: ./
+  filters:
+    - ignore:
+      - ".idea"
+      - .git
+      - node_modules
+      - ai_helper
+      - "spike"
+      - config.yml
+      - doc
+      - "**/*.png"
+      - "**/.DS_Store"
+      - "**/LICENSE.txt"
+      - "**/package-lock.json"
+      - read_model
+      - related_java_class_analysis
+      - resolve_java_class_full_name
+input:
+  instruction: |
+    我希望 加一个集成测试 给 show_content_filters
+output:     
+  prompt:
+    path: .ai_helper/prompt_builder/output/working
+    backup_path: .ai_helper/prompt_builder/output/backup

@@ -1,0 +1,58 @@
+desc: "测试用例9.1 - 测试 show_content_filters 使用 ignore 规则"
+given:
+  project_dir: "project"
+  filters:
+    - filter_in:
+        - "**/*.js"
+        - "**/*.md"
+        - "**/*.txt"
+  show_content_filters:
+    - ignore:
+        - "**/*.md"
+then:
+  expected_folder_tree: |
+    .
+    ├── file1.txt
+    ├── ignored.md
+    └── subdir
+        ├── file2.txt
+        └── ignored.js
+  expected_json_result:
+    name: "."
+    path: "./"
+    isDirectory: true
+    children:
+      - name: "file1.txt"
+        path: "file1.txt"
+        isDirectory: false
+      - name: "ignored.md"
+        path: "ignored.md"
+        isDirectory: false
+      - name: "subdir"
+        path: "subdir"
+        isDirectory: true
+        children:
+          - name: "file2.txt"
+            path: "subdir/file2.txt"
+            isDirectory: false
+          - name: "ignored.js"
+            path: "subdir/ignored.js"
+            isDirectory: false
+    _contentFilteredTree:
+      name: "."
+      path: "./"
+      isDirectory: true
+      children:
+        - name: "file1.txt"
+          path: "file1.txt"
+          isDirectory: false
+        - name: "subdir"
+          path: "subdir"
+          isDirectory: true
+          children:
+            - name: "file2.txt"
+              path: "subdir/file2.txt"
+              isDirectory: false
+            - name: "ignored.js"
+              path: "subdir/ignored.js"
+              isDirectory: false

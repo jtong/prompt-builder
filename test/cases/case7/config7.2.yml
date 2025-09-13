@@ -1,0 +1,12 @@
+project:
+  base_path: "test/cases/case7/project"
+  filters:
+    - filter_in:
+        - "**/*.txt"
+        - "**/*.md"
+        - "**/*.js"
+  show_content_filters:
+    - ignore:
+        - "**/*.md"
+    - filter_in:
+        - "**/*.txt"

@@ -104,6 +104,8 @@ function renderTemplate_ConfigObject(templateText, config, contextPath, baseDir)
         const jsonResult = {};
         read_folder_tree(project, jsonResult);
 
+        // Use content filtered tree if available, otherwise use regular tree
+        const treeToUse = jsonResult._contentFilteredTree || jsonResult;
         const allFiles = [];
 
         function traverseJson(jsonObj) {
@@ -119,7 +121,7 @@ function renderTemplate_ConfigObject(templateText, config, contextPath, baseDir)
             }
         }
 
-        traverseJson(jsonResult);
+        traverseJson(treeToUse);
 
         return new Handlebars.SafeString(read_related_files(project.base_path, allFiles));
     });
@@ -128,6 +130,8 @@ function renderTemplate_ConfigObject(templateText, config, contextPath, baseDir)
         const jsonResult = {};
         read_folder_tree(project, jsonResult);
 
+        // Use content filtered tree if available, otherwise use regular tree
+        const treeToUse = jsonResult._contentFilteredTree || jsonResult;
         const allFiles = [];
 
         function traverseJson(jsonObj) {
@@ -143,7 +147,7 @@ function renderTemplate_ConfigObject(templateText, config, contextPath, baseDir)
             }
         }
 
-        traverseJson(jsonResult);
+        traverseJson(treeToUse);
 
         let xmlContent = '';
         for (const file of allFiles) {

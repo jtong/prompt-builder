@@ -31,6 +31,15 @@ function read_folder_tree(project, jsonResult = {}) {
     Object.assign(jsonResult, currentTree);
     jsonResult.name = ".";
     jsonResult.path = "./";
+
+    // Apply show_content_filters if they exist and store separately
+    if (project.show_content_filters) {
+        const contentFilteredTree = applyShowContentFilters(currentTree, project.show_content_filters);
+        contentFilteredTree.name = ".";
+        contentFilteredTree.path = "./";
+        jsonResult._contentFilteredTree = contentFilteredTree;
+    }
+
     // Generate the folder tree text
     return buildFolderTree(currentTree);
 }
@@ -93,6 +102,21 @@ function applyFilterIn(tree, filterInPaths) {
         .filter(Boolean);
 
     return filteredChildren.length > 0 ? { ...tree, children: filteredChildren } : null;
+}
+
+function applyShowContentFilters(tree, showContentFilters) {
+    // Apply show_content_filters sequentially, similar to regular filters
+    let currentTree = tree;
+
+    for (const filter of showContentFilters) {
+        if (filter.ignore) {
+            currentTree = applyIgnoreFilter(currentTree, filter.ignore || []);
+        } else if (filter.filter_in) {
+            currentTree = applyFilterIn(currentTree, filter.filter_in);
+        }
+    }
+
+    return currentTree;
 }
 
 // 基于最终的 jsonResult 生成文本形式的树状结构

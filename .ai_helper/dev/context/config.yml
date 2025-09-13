@@ -33,5 +33,5 @@ input:
     我希望 all_files_xml 的标签去掉CDATA，变成普通的XML标签
 output:     
   prompt:
-    path: ai_helper/prompt_builder/output/working
-    backup_path: ai_helper/prompt_builder/output/backup
+    path: .ai_helper/prompt_builder/output/working
+    backup_path: .ai_helper/prompt_builder/output/backup
