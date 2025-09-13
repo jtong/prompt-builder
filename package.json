@@ -1,6 +1,6 @@
 {
   "name": "prompt-context-builder",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Based on project engineering files and other information, automatically generate context related to tasks to save the cost of writing prompt words. ",
   "main": "index.js",
   "bin": {
