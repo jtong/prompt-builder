@@ -161,6 +161,85 @@ ${fileContent}
         return new Handlebars.SafeString(xmlContent);
     });
 
+    // 新增 read_only_references helper
+    Handlebars.registerHelper('read_only_references', function() {
+        if (!config.read_only_references || !Array.isArray(config.read_only_references)) {
+            return new Handlebars.SafeString('');
+        }
+
+        let output = '';
+        
+        for (const reference of config.read_only_references) {
+            if (reference.folder) {
+                const folderConfig = reference.folder;
+                
+                // 解析 base_path
+                const resolvedBasePath = path.resolve(baseDir, folderConfig.base_path);
+                
+                // 创建用于 read_folder_tree 的项目配置
+                const referenceProject = {
+                    base_path: resolvedBasePath,
+                    filters: folderConfig.filters,
+                    show_content_filters: folderConfig.show_content_filters
+                };
+                
+                // 获取描述，如果没有设置则使用文件夹名
+                const desc = folderConfig.desc || path.basename(resolvedBasePath);
+                
+                // 生成文件树
+                const jsonResult = {};
+                const folderTree = read_folder_tree(referenceProject, jsonResult);
+                
+                // 确定要使用的树结构（内容过滤后的树或常规树）
+                const treeToUse = jsonResult._contentFilteredTree || jsonResult;
+                
+                // 收集所有文件
+                const allFiles = [];
+                function traverseJson(jsonObj) {
+                    if (jsonObj.isDirectory) {
+                        if (jsonObj.children) {
+                            jsonObj.children.forEach(child => traverseJson(child));
+                        }
+                    } else {
+                        allFiles.push({
+                            path: jsonObj.path,
+                            reader: 'all'
+                        });
+                    }
+                }
+                traverseJson(treeToUse);
+                
+                // 生成文件内容的 XML
+                let filesXml = '';
+                for (const file of allFiles) {
+                    try {
+                        const fileContent = read_all(resolvedBasePath, file);
+                        filesXml += `<file path="${file.path}">
+${fileContent}
+</file>
+`;
+                    } catch (error) {
+                        console.error(`Error reading reference file: ${file.path}`, error);
+                    }
+                }
+                
+                // 构建输出
+                output += `<ReadOnlyReference desc="${desc}" path="${folderConfig.base_path}">
+<folder>
+${folderTree}
+</folder>
+<files>
+${filesXml}
+</files>
+</ReadOnlyReference>
+
+`;
+            }
+        }
+        
+        return new Handlebars.SafeString(output);
+    });
+
     // 使用 Handlebars 编译和渲染模板
     const template = Handlebars.compile(templateText);
     return template({ data: {} });
