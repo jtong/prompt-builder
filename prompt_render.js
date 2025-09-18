@@ -5,7 +5,7 @@ const path = require('path');
 const read_folder_tree = require('./read_folder');
 const read_related_files = require('./related_files.js');
 const partialReader = require('./partial');
-
+const {loadYamlSync} = require('@jtong/my-yaml-loader')
 
 /**
  * 解析并渲染模板
@@ -20,10 +20,11 @@ function renderTemplate(templateText, configPath, contextPath, baseDir) {
     // 读取并解析配置文件
 
     const configContent = fs.readFileSync(resolvedConfigPath, 'utf8');
-    const config = yaml.load(configContent);
+    const base_path = path.resolve(baseDir, yaml.load(configContent).project.base_path)
+    const config = loadYamlSync(configContent, base_path);
     let project = config.project;
 
-    project.base_path = path.resolve(baseDir, project.base_path);
+    project.base_path =  base_path;
     // console.log(project.base_path)
 
     return renderTemplate_ConfigObject(templateText, config, contextPath, baseDir);
