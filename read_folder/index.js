@@ -143,4 +143,34 @@ function buildFolderTree(jsonTree, prefix = '', isLast = true, isRoot = true) {
     return result;
 }
 
+/**
+ * 从 read_folder_tree 生成的 JSON 结果中提取所有文件的相对路径列表
+ * 这是一个后续处理函数，用于处理 read_folder_tree 的 jsonResult 参数
+ * @param {Object} jsonResult - 由 read_folder_tree 填充的 JSON 对象
+ * @param {Array} results - 用于累积结果的数组（可选）
+ * @returns {Array<string>} 文件相对路径数组
+ */
+function extractFilePaths(jsonResult, results = []) {
+    if (!jsonResult) return results;
+
+    // Use content filtered tree if available, otherwise use regular tree
+    const tree = jsonResult._contentFilteredTree || jsonResult;
+
+    function traverse(node) {
+        if (!node) return;
+
+        if (node.isDirectory) {
+            if (node.children) {
+                node.children.forEach(child => traverse(child));
+            }
+        } else {
+            results.push(node.path);
+        }
+    }
+
+    traverse(tree);
+    return results;
+}
+
 module.exports = read_folder_tree;
+module.exports.extractFilePaths = extractFilePaths;
